@@ -14,7 +14,7 @@ type Config struct {
 }
 
 /*
-	Returns pointer to a new config struct populated with default values
+	Returns pointer to a new config struct initialized with default values
 */
 func NewConfig() *Config {
 	// returning addresss of Config struct populated with default values
