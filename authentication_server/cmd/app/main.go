@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"log"
 
 	"github.com/BurntSushi/toml"
 	"github.com/furrygem/authentication_server/internal/app/apiserver"
@@ -18,5 +19,7 @@ func main() {
 
 	config := apiserver.NewConfig()
 	toml.DecodeFile(configPath, config)
-
+	if err := apiserver.Start(config); err != nil {
+		log.Fatal(err)
+	}
 }
