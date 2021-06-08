@@ -1,0 +1,24 @@
+version: "3.3"
+services: 
+    db:
+        image: postgres
+        env_file: postgres_compose.env
+        command: >
+            -c ssl=on
+            -c ssl_cert_file=/run/secrets/db.crt
+            -c ssl_key_file=/run/secrets/db.key
+        volumes:
+            - ./postgres/data:/var/lib/postgresql/data/pgdata
+        secrets:
+            - db_password_file
+            - db.crt
+            - db.key
+        ports: 
+            - 15432:5432
+secrets:
+    db_password_file:
+        file: ./database/secrets/dbpassword.txt
+    db.crt:
+        file: ./database/secrets/db.crt
+    db.key:
+        file: ./database/secrets/db.key
