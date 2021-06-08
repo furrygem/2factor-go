@@ -1,4 +1,3 @@
-// Package  apiserver serving api, provides authentication, registration and other requests processing logic
 package apiserver
 
 import (

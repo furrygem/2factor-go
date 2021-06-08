@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"strings"
 
+	"github.com/furrygem/authentication_server/internal/app/model"
 	"github.com/sirupsen/logrus"
 
 	_ "github.com/lib/pq" // importing postgres driver anonymously
@@ -52,4 +53,8 @@ func Open(c *Config) (*Store, error) {
 	store.db = db     // assigning db to store store instance
 	return store, nil //returning pointer to initialized store instance and nil error
 
+}
+
+func (s *Store) GetUserByModel(model *model.User) {
+	// getting user by data from model
 }
