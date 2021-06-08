@@ -1,0 +1,2 @@
+this folder contains all the things needed to start the postgres db server.
+By default is empty but when preparing project to start will be automatically populated with "data" and "secrets" folders. Data contain all database data so it can be persistent and secrets contains password for db and openssl key/cert pair 

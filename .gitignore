@@ -1,2 +1,4 @@
 authentication_server/secrets
 authentication_server/main
+database/secrets
+database/data
