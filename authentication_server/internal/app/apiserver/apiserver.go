@@ -38,7 +38,7 @@ func Start(c *Config) error {
 	}
 	st.Logger = logger
 	server.store = st
-	server.logger.Info("Starting listener on %s", c.BindAddr)
+	server.logger.Infof("Starting listener on %s", c.BindAddr)
 	if err = http.ListenAndServe(c.BindAddr, server); err != nil { // starting http listener. if there is an error cathing it
 		server.logger.Error("Error while serving")
 		return err

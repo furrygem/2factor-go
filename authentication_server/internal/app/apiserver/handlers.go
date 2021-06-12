@@ -27,7 +27,7 @@ func (s *apiserver) HandleUsers() http.HandlerFunc {
 			if err := json.NewDecoder(r.Body).Decode(model); err != nil {
 				s.WriteError(err, http.StatusUnprocessableEntity, rw) // Writing error to response and logging it
 			}
-			s.store.GetUserByModel(model)
+			// s.store.GetUserByModel(model)
 		}
 	}
 }

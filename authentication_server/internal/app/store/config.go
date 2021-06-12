@@ -9,7 +9,7 @@ type Config struct {
 	Docker secret | ex. db_password_file = "/run/secrets/dbpassword.txt" */
 	DbDB string `toml:"db_database"` // ex. db_database = "2factor"
 	/*
-		The example strings above will be formatted as "postgres://postgres:(password_file_content)@db:5433/2factor"
+		The example strings above will be formatted as "postgres://postgres:(password_file_content)@db:5432/2factor"
 	*/
 }
 

@@ -28,7 +28,7 @@ func Open(c *Config) (*Store, error) {
 		store         *Store
 	)
 	store = &Store{}                      // creating empty store instance
-	format_string = "%s://%s:%s@%s:%i/%s" // string containing format template for db url
+	format_string = "%s://%s:%s@%s:%d/%s" // string containing format template for db url
 	/* converting values from provided config to database address */
 
 	/* Reading password file contnents and catching error */
@@ -46,7 +46,7 @@ func Open(c *Config) (*Store, error) {
 		return nil, err
 	}
 	/* pinging opened in lazy mode db to initialize it and catching error */
-	db.Ping()
+	err = db.Ping()
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,7 @@ func Open(c *Config) (*Store, error) {
 
 }
 
-func (s *Store) GetUserByModel(model *model.User) {
-	// getting user by data from model
+func (s *Store) GetUserByUsername(model *model.User) {
+	// getting user by data from provided model
+
 }
