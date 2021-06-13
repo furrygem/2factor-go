@@ -18,7 +18,7 @@ func NewConfig() *Config {
 
 	// returning default config with some varibles set to default values
 	return &Config{
-		BindAddr:    "127.0.0.1",
+		BindAddr:    "127.0.0.1:8090",
 		LogLevel:    "info",
 		StoreConfig: store_config, // passing pointer to store config to server config
 	}

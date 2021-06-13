@@ -31,13 +31,19 @@ func Start(c *Config) error {
 		router: mux.NewRouter(),
 	} // create new apiserver instance
 	/*creating new store instance and cathing error*/
+	if err := server.configureLogger(c.LogLevel); err != nil {
+		return err
+	}
+	server.configureRouter()
 	st, err = store.Open(c.StoreConfig) // opening database and reciving  store instance and error object
 	if err != nil {                     //catching error if it exist
 		server.logger.Error("Error initializing store instance")
 		return err
 	}
+
 	st.Logger = logger
 	server.store = st
+	defer server.store.Close()
 	server.logger.Infof("Starting listener on %s", c.BindAddr)
 	if err = http.ListenAndServe(c.BindAddr, server); err != nil { // starting http listener. if there is an error cathing it
 		server.logger.Error("Error while serving")
@@ -51,4 +57,17 @@ func (s *apiserver) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	// all the middleware for requests will be putted here
 	s.logger.Infof("Serving client | remote_addr: %s | endpoint: %s | Method: %s", r.RemoteAddr, r.RequestURI, r.Method)
 	s.router.ServeHTTP(rw, r)
+}
+
+func (s *apiserver) configureRouter() {
+	s.router.HandleFunc("/api/users", s.HandleUsers())
+}
+
+func (s *apiserver) configureLogger(loglevel string) error {
+	parsedlevel, err := logrus.ParseLevel(loglevel)
+	if err != nil {
+		return err
+	}
+	s.logger.SetLevel(parsedlevel)
+	return nil
 }

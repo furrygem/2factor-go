@@ -70,9 +70,46 @@ func Open(c *Config) (*Store, error) {
 
 }
 
-func (s *Store) GetUserByUsername(model *model.User) {
-	// getting user by data from provided model
+func (s *Store) Close() error {
+	if err := s.db.Close(); err != nil {
+		return err
+	}
+	return nil
+}
 
+func (s *Store) GetUserByModel(mdl *model.User) ([]*model.User, error) {
+	// getting user by data from provided model
+	var (
+		result     []*model.User
+		query_args []interface{}
+	)
+	model_map := mdl.MapFromModel()
+
+	stmt, err := s.QueryStatementFromMap(model_map)
+	if err != nil {
+		return nil, err
+	}
+	// quering multiple rows with stmt.Query
+	for _, val := range model_map {
+		query_args = append(query_args, val)
+	}
+	rows, err := stmt.Query(query_args...)
+	if err != nil {
+		return nil, err
+	}
+	// for every row
+	for rows.Next() {
+		// creating new user model
+		m := model.NewUser()
+		// scanning row data to it
+		if err := rows.Scan(&m.ID, &m.Username, &m.Password); err != nil {
+			return nil, err
+		}
+		// adding pointer to model to result
+		result = append(result, m)
+	}
+
+	return result, nil
 }
 
 // Helper function to validate and set sslmode
