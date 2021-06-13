@@ -18,4 +18,12 @@ Server is setting default values to all varibles that have not been set in confi
 - db_user *string* - username for provided db. By default is set to default postgres user ("postgres")
 - db_password_file *string* - full path to the file containing password to database server. For security reasons recommended passing it as docker secret. By default is set to /run/secrets/dbpassword.txt.
 - db_database *string* - path to the database on the database server. By default is set to "2factor". 
+- db_sslmode *string* - sslmode for connecting to database. must be (disable|allow|prefer|require|verify-ca|verify-full) [see availiable sslmodes by postgres](https://www.postgresql.org/docs/11/libpq-ssl.html#LIBPQ-SSL-PROTECTION)
 
+## Running tests
+To run tests you should execute these commands:
+```bash
+make tests_start_docker
+make tests
+make clean_tests
+```

@@ -1,7 +1,6 @@
 package store_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/furrygem/authentication_server/internal/app/model"
@@ -15,6 +14,7 @@ func Test_DBOpen(t *testing.T) {
 	sc.DbPort = 15432
 	sc.DbAddr = "127.0.0.1"
 	sc.DbDB = "tests"
+	sc.SSLMode = "disable"
 	st, err := store.Open(sc)
 	assert.NoError(t, err, "Opening database")
 	assert.NotNil(t, st, "Pointer to store instance is not nil")
@@ -30,11 +30,12 @@ func Test_QueryStatementFromMap(t *testing.T) {
 	sc.DbPort = 15432
 	sc.DbAddr = "127.0.0.1"
 	sc.DbDB = "tests"
+	sc.SSLMode = "disable"
 	st, err := store.Open(sc)
 	assert.NoError(t, err, "Opening database")
 	assert.NotNil(t, st, "Pointer to store instance is not nil")
 	map1 := m.MapFromModel()
 	stmt, err := st.QueryStatementFromMap(map1)
 	assert.NoError(t, err, "Creating statement")
-	fmt.Printf("stmt: %v\n", stmt)
+	assert.NotNil(t, stmt, "stmt object must not be nil")
 }

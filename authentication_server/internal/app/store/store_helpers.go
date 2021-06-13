@@ -10,7 +10,12 @@ func (s *Store) QueryStatementFromMap(m map[string]interface{}) (*sql.Stmt, erro
 	initialQuery := "select * from users where "
 	i := 1
 	for key := range m {
-		initialQuery += fmt.Sprintf("%s=%d ", key, i)
+		if i == len(m) {
+			initialQuery += fmt.Sprintf("%s=$%d", key, i)
+			i++
+			continue
+		}
+		initialQuery += fmt.Sprintf("%s=$%d AND ", key, i)
 		i++
 	}
 	stmt, err := s.db.Prepare(initialQuery)

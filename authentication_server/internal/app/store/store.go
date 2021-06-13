@@ -10,6 +10,8 @@ import (
 	"github.com/furrygem/authentication_server/internal/app/model"
 	"github.com/sirupsen/logrus"
 
+	"github.com/furrygem/authentication_server/internal/app/helpers"
+
 	_ "github.com/lib/pq" // importing postgres driver anonymously
 )
 
@@ -21,14 +23,23 @@ type Store struct {
 
 // Entrypoint to sore module. It takes store config as an arugument and returns pointer to configured store instance
 func Open(c *Config) (*Store, error) {
+	var AVAILABLE_SSLMODES = []string{
+		"disable",
+		"allow",
+		"prefer",
+		"require",
+		"verify-ca",
+		"verify-full",
+	}
+
 	var (
 		db_address    string
 		format_string string
 		db_password   string
 		store         *Store
 	)
-	store = &Store{}                      // creating empty store instance
-	format_string = "%s://%s:%s@%s:%d/%s" // string containing format template for db url
+	store = &Store{}                                 // creating empty store instance
+	format_string = "%s://%s:%s@%s:%d/%s?sslmode=%s" // string containing format template for db url
 	/* converting values from provided config to database address */
 
 	/* Reading password file contnents and catching error */
@@ -37,8 +48,12 @@ func Open(c *Config) (*Store, error) {
 		return nil, err //We do not returning any Store struct but returning error
 	}
 	db_password = strings.TrimSuffix(string(data), "\n") // setting content of the file to db_password varible and trimming newline in the suffix
+
+	if !store.issslmode(c.SSLMode, AVAILABLE_SSLMODES) {
+		return nil, errNotSslMode
+	}
 	/*formatting address */
-	db_address = fmt.Sprintf(format_string, c.DbProtocol, c.DbUser, db_password, c.DbAddr, c.DbPort, c.DbDB)
+	db_address = fmt.Sprintf(format_string, c.DbProtocol, c.DbUser, db_password, c.DbAddr, c.DbPort, c.DbDB, c.SSLMode)
 	/* openenig database in lazy mode and catching error  */
 
 	db, err := sql.Open("postgres", db_address)
@@ -58,4 +73,9 @@ func Open(c *Config) (*Store, error) {
 func (s *Store) GetUserByUsername(model *model.User) {
 	// getting user by data from provided model
 
+}
+
+// Helper function to validate and set sslmode
+func (s *Store) issslmode(sslmode string, sslmodes_list []string) bool {
+	return helpers.StringInSlice(sslmode, sslmodes_list)
 }
