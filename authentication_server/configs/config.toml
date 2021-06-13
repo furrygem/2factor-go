@@ -1,0 +1,6 @@
+[StoreConfig]
+db_addr = "localhost"
+db_database = "tests"
+db_port = 15432
+db_password_file = "internal/app/store/testing_password.txt"
+db_sslmode = "disable"

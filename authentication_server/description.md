@@ -27,3 +27,8 @@ make tests_start_docker
 make tests
 make clean_tests
 ```
+### API functionality
+#### CRUD
+authentication server API provides CRUD to access different tables of connected DB
+##### Create
+

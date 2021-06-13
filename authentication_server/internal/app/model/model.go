@@ -3,15 +3,19 @@ package model
 
 import (
 	"reflect"
+	"regexp"
 
+	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
-	ID            int64  `json:"id" col:"id"`
-	Username      string `json:"username" col:"username"`
-	ClearPassword string `json:"clear_password"`
-	Password      string `json:"password" col:"hash_password"`
+	ID              int64  `json:"id" col:"id"`
+	Username        string `json:"username" col:"username"`
+	DiscordUsername string `json:"discord_username" col:"discord_username"`
+	FirstName       string `json:"firstname" col:"firstname"`
+	ClearPassword   string `json:"clear_password"`
+	Password        string `json:"password" col:"hash_password"`
 }
 
 func NewUser() *User {
@@ -43,6 +47,15 @@ func (m *User) MapFromModel() map[string]interface{} {
 	}
 	// returning result map
 	return res
+}
+
+func (u *User) Validate() error {
+	return validation.ValidateStruct(
+		validation.Field(&u.Username, validation.Required, validation.Length(1, 20)),
+		validation.Field(&u.DiscordUsername, validation.Required, validation.Match(regexp.MustCompile("^.{3,32}#[0-9]{4}$"))),
+		validation.Field(&u.FirstName, validation.Length(1, 25)),
+		validation.Field(&u.ClearPassword, validation.Length(1, 64)),
+	)
 }
 
 // Method Prepare hashes writes to Password field of the User model bcrypt hashed value if ClearPassword field.
