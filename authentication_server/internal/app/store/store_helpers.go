@@ -52,7 +52,7 @@ func (s *Store) UpdateStatementFromMap(set map[string]interface{}, where map[str
 	// 	where_query += fmt.Sprintf("%s = $%d AND ", key, i)
 	// }
 	set_query, i := basicqueryfrommap(set, ",", 1)
-	where_query, _ = basicqueryfrommap(where, " AND", i)
+	where_query, _ = basicqueryfrommap(where, " AND ", i)
 	query := fmt.Sprintf(initial_query_template, set_query, where_query, suffix)
 	stmt, err := s.db.Prepare(query)
 	if err != nil {

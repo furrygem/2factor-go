@@ -35,7 +35,7 @@ func Test_QueryStatementFromMap(t *testing.T) {
 	assert.NoError(t, err, "Opening database")
 	assert.NotNil(t, st, "Pointer to store instance is not nil")
 	map1 := m.MapFromModel()
-	stmt, err := st.QueryStatementFromMap("SELECT *", map1, "")
+	stmt, err := st.QueryStatementFromMap("SELECT * FROM", map1, "RETURNING *")
 	assert.NoError(t, err, "Creating statement")
 	assert.NotNil(t, stmt, "stmt object must not be nil")
 }
