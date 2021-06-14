@@ -13,7 +13,7 @@ type User struct {
 	ID              int64  `json:"id" col:"id"`
 	Username        string `json:"username" col:"username"`
 	DiscordUsername string `json:"discord_username" col:"discord_username"`
-	FirstName       string `json:"firstname" col:"firstname"`
+	FirstName       string `json:"first_name" col:"first_name"`
 	ClearPassword   string `json:"clear_password"`
 	Password        string `json:"password" col:"hash_password"`
 }

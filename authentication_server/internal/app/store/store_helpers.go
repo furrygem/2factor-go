@@ -7,7 +7,7 @@ import (
 
 // Execute query with map of arguments
 func (s *Store) QueryStatementFromMap(prefix string, m map[string]interface{}, suffix string) (*sql.Stmt, error) {
-	initial_query_template := "%s FROM users WHERE %s %s"
+	initial_query_template := "%s users WHERE %s %s"
 
 	// i := 1
 	// for key := range m {
@@ -65,7 +65,7 @@ func basicqueryfrommap(m map[string]interface{}, delimiter string, i int) (strin
 	query := ""
 	counter := 1
 	for key := range m {
-		query += fmt.Sprintf("%s = $%d", key, i)
+		query += fmt.Sprintf("%s=$%d", key, i)
 		if counter != len(m) {
 			query += delimiter
 		}

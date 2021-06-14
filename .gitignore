@@ -3,3 +3,4 @@ authentication_server/main
 database/secrets
 database/data
 authentication_server/commit
+authentication_server/configs/config.toml

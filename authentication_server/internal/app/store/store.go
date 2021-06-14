@@ -85,7 +85,7 @@ func (s *Store) GetUserByModel(mdl *model.User) ([]*model.User, error) {
 	)
 	model_map := mdl.MapFromModel()
 
-	stmt, err := s.QueryStatementFromMap("SELCT * FROM", model_map, "")
+	stmt, err := s.QueryStatementFromMap("SELECT * FROM", model_map, "")
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,12 @@ func (s *Store) GetUserByModel(mdl *model.User) ([]*model.User, error) {
 		// creating new user model
 		m := model.NewUser()
 		// scanning row data to it
-		if err := rows.Scan(&m.ID, &m.Username, &m.Password); err != nil {
+		if err := rows.Scan(&mdl.ID,
+			&mdl.Username,
+			&mdl.DiscordUsername,
+			&mdl.FirstName,
+			&mdl.Password,
+		); err != nil {
 			return nil, err
 		}
 		// adding pointer to model to result
@@ -199,7 +204,7 @@ func (s *Store) GetCountOfUsersWithModel(mdl *model.User) (int, error) {
 		query_args []interface{}
 	)
 	model_map := mdl.MapFromModel()
-	stmt, err := s.QueryStatementFromMap("SELECT COUNT(*)", model_map, "")
+	stmt, err := s.QueryStatementFromMap("SELECT COUNT(*) FROM", model_map, "")
 	if err != nil {
 		return -1, err
 	}
