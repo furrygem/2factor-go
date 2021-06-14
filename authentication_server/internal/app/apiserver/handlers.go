@@ -94,7 +94,11 @@ func (s *apiserver) HandleUsers() http.HandlerFunc {
 				s.WriteError(err, http.StatusUnprocessableEntity, rw)
 				return
 			}
-			s.store.DeleteUserWithModel(model)
+			err := s.store.DeleteUserWithModel(model)
+			if err != nil {
+				s.WriteError(err, http.StatusBadRequest, rw)
+				return
+			}
 			response, err := json.Marshal(model)
 			if err != nil {
 				s.WriteError(err, http.StatusBadRequest, rw)

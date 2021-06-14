@@ -102,11 +102,11 @@ func (s *Store) GetUserByModel(mdl *model.User) ([]*model.User, error) {
 		// creating new user model
 		m := model.NewUser()
 		// scanning row data to it
-		if err := rows.Scan(&mdl.ID,
-			&mdl.Username,
-			&mdl.DiscordUsername,
-			&mdl.FirstName,
-			&mdl.Password,
+		if err := rows.Scan(&m.ID,
+			&m.Username,
+			&m.DiscordUsername,
+			&m.FirstName,
+			&m.Password,
 		); err != nil {
 			return nil, err
 		}
@@ -176,7 +176,7 @@ func (s *Store) DeleteUserWithModel(mdl *model.User) error {
 		return errMultipleUsersFetchedByTargetInDeleteQuery
 	}
 	model_map := mdl.MapFromModel()
-	stmt, err := s.QueryStatementFromMap("DELETE", model_map, "RETURNING *")
+	stmt, err := s.QueryStatementFromMap("DELETE FROM", model_map, "RETURNING *")
 	if err != nil {
 		return err
 	}
