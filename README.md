@@ -6,3 +6,5 @@ docker-compose based microservices architecture.
 Project root directory contains directories named same as the corresponding microservices.
 
 ## Configuring and setting up
+
+### Setting up database

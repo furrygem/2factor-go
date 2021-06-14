@@ -7,9 +7,10 @@ type Config struct {
 	DbUser         string `toml:"db_user"`          // ex. db_user = "postgres"
 	DbPasswordFile string `toml:"db_password_file"` /* db_password_file - name of the file containing password for database. Recommended passing password as
 	Docker secret | ex. db_password_file = "/run/secrets/dbpassword.txt" */
-	DbDB string `toml:"db_database"` // ex. db_database = "2factor"
+	DbDB    string `toml:"db_database"` // ex. db_database = "2factor"
+	SSLMode string `toml:"db_sslmode"`  // ex. db_sslmode = "require"
 	/*
-		The example strings above will be formatted as "postgres://postgres:(password_file_content)@db:5433/2factor"
+		The example strings above will be formatted as "postgres://postgres:(password_file_content)@db:5432/2factor?sslmode=require"
 	*/
 }
 
@@ -25,5 +26,6 @@ func NewConfig() *Config {
 		DbUser:         "postgres",
 		DbPasswordFile: "/run/secrets/dbpassword.txt",
 		DbDB:           "2factor",
+		SSLMode:        "require",
 	}
 }
